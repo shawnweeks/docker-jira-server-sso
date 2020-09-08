@@ -1260,10 +1260,12 @@ description, distributable, and context-param elements.
         <servlet-class>jsp.issue_002dpermission_002derror_jsp</servlet-class>
     </servlet>
 
-    {% if CROWD_SSO_ENABLED is not defined or CROWD_SSO_ENABLED == 'false' %}<servlet>
+    {% if CROWD_SSO_ENABLED is not defined or CROWD_SSO_ENABLED == 'false' %}
+    <servlet>
         <servlet-name>jsp.login_jsp</servlet-name>
         <servlet-class>jsp.login_jsp</servlet-class>
-    </servlet>{% endif %}
+    </servlet>
+    {% endif %}
 
     <servlet>
         <servlet-name>jsp.osd_jsp</servlet-name>
@@ -4745,10 +4747,12 @@ description, distributable, and context-param elements.
         <url-pattern>/issue-permission-error.jsp</url-pattern>
     </servlet-mapping>
     
-    {% if CROWD_SSO_ENABLED is not defined or CROWD_SSO_ENABLED == 'false' %}<servlet-mapping>
+    {% if CROWD_SSO_ENABLED is not defined or CROWD_SSO_ENABLED == 'false' %}
+    <servlet-mapping>
         <servlet-name>jsp.login_jsp</servlet-name>
         <url-pattern>/login.jsp</url-pattern>
-    </servlet-mapping>{% endif %}
+    </servlet-mapping>
+    {% endif %}
 
     <servlet-mapping>
         <servlet-name>jsp.osd_jsp</servlet-name>
@@ -8205,3 +8209,4 @@ All session-config, mime-mapping, welcome-file-list, error-page, taglib,
 resource-ref, security-constraint, login-config, security-role,
 env-entry, and ejb-ref elements should follow this fragment.
 -->
+</web-app>
