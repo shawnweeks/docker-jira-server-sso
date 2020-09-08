@@ -1,1 +1,0 @@
-docker build -t jira-server-sso --build-arg JIRA_VERSION=8.9.0 .

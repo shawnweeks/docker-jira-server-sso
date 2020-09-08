@@ -1,38 +1,19 @@
 #!/usr/bin/python3
 
-import os
-import shutil
-from entrypoint_helpers import env, gen_cfg, gen_container_id, str2bool, start_app
+from entrypoint_helpers import env, gen_cfg, set_props
 
-SSO_ENABLED = env['sso_enabled']
+JIRA_HOME = env['JIRA_HOME']
+JIRA_INSTALL_DIR = env['JIRA_INSTALL_DIR']
 
-print("Checking for SSO env variable")
-if SSO_ENABLED.lower() == 'true':
-    print("Copying SSO related files")
-    gen_cfg('login.jsp.j2', '/opt/atlassian/jira/atlassian-jira/login.jsp')
-    shutil.copyfile("/opt/atlassian/sso/seraph-config.xml.j2",
-                    "/opt/atlassian/etc/seraph-config.xml.j2")
-    shutil.copyfile("/opt/atlassian/sso/crowd.properties",
-                    "/opt/atlassian/jira/atlassian-jira/WEB-INF/classes/crowd.properties")
-    shutil.copyfile("/opt/atlassian/sso/jira-config.properties",
-                    "/var/atlassian/application-data/jira/jira-config.properties")
-
-RUN_USER = env['run_user']
-RUN_GROUP = env['run_group']
-JIRA_INSTALL_DIR = env['jira_install_dir']
-JIRA_HOME = env['jira_home']
-
-gen_container_id()
-if os.stat('/etc/container_id').st_size == 0:
-    gen_cfg('container_id.j2', '/etc/container_id',
-            user=RUN_USER, group=RUN_GROUP, overwrite=True)
 gen_cfg('server.xml.j2', f'{JIRA_INSTALL_DIR}/conf/server.xml')
-gen_cfg('seraph-config.xml.j2',
-        f'{JIRA_INSTALL_DIR}/atlassian-jira/WEB-INF/classes/seraph-config.xml')
-gen_cfg('dbconfig.xml.j2', f'{JIRA_HOME}/dbconfig.xml',
-        user=RUN_USER, group=RUN_GROUP, overwrite=False)
-if str2bool(env.get('clustered')):
-    gen_cfg('cluster.properties.j2', f'{JIRA_HOME}/cluster.properties',
-            user=RUN_USER, group=RUN_GROUP, overwrite=False)
 
-start_app(f'{JIRA_INSTALL_DIR}/bin/start-jira.sh -fg', JIRA_HOME, name='Jira')
+if 'CROWD_SSO_ENABLED' in env and env['CROWD_SSO_ENABLED'] == 'true':
+    gen_cfg('seraph-config.xml.j2', f'{JIRA_INSTALL_DIR}/atlassian-jira/WEB-INF/classes/seraph-config.xml')
+    gen_cfg('web.xml.j2', f'{JIRA_INSTALL_DIR}/atlassian-jira/WEB-INF/web.xml')
+    gen_cfg('login.jsp.j2', f'{JIRA_INSTALL_DIR}/atlassian-jira/login.jsp')
+    gen_cfg('crowd.properties.j2', f'{JIRA_INSTALL_DIR}/atlassian-jira/WEB-INF/classes/crowd.properties')
+    props = {
+        "jira.websudo.is.disabled":"true",
+        "jira.disable.login.gadget":"true",
+    }
+    set_props(props,f'{JIRA_HOME}/jira-config.properties')

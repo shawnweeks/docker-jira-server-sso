@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <security-config>
     <parameters>
         <init-param>
@@ -15,8 +16,7 @@
                 '${userRole}' when specified, should cause logout after login to an user with privileges lesser than requested
             -->
             <param-name>login.url</param-name>
-			<!-- <param-value>http://localhost:8081/login?redirectTo=${originalurl}</param-value> -->
-			<param-value>/login.jsp?permissionViolation=true&amp;os_destination=${originalurl}&amp;page_caps=${pageCaps}&amp;user_role=${userRole}</param-value>
+            <param-value>/login.jsp?permissionViolation=true&amp;os_destination=${originalurl}&amp;page_caps=${pageCaps}&amp;user_role=${userRole}</param-value>
             <!--<param-value>http://sso.mycompany.com/login?redirectTo=${originalurl}</param-value>-->
         </init-param>
         <init-param>
@@ -26,7 +26,6 @@
                 - same properties as login.url above
             -->
             <param-name>link.login.url</param-name>
-			<!-- <param-value>http://localhost:8081/login?redirectTo=${originalurl}</param-value> -->
             <param-value>/login.jsp?os_destination=${originalurl}</param-value>
             <!--<param-value>/secure/Dashboard.jspa?os_destination=${originalurl}</param-value>-->
             <!--<param-value>http://sso.mycompany.com/login?redirectTo=${originalurl}</param-value>-->
@@ -92,12 +91,16 @@
         </init-param>
     </parameters>
 
-    <!-- CROWD:START - If enabling Crowd SSO integration uncomment the following SSOSeraphAuthenticator and comment out the JiraSeraphAuthenticator below -->    
+    <!-- CROWD:START - If enabling Crowd SSO integration uncomment the following SSOSeraphAuthenticator and comment out the JiraSeraphAuthenticator below -->
+    {% if CROWD_SSO_ENABLED is defined and CROWD_SSO_ENABLED == 'true' %}
     <authenticator class="com.atlassian.jira.security.login.SSOSeraphAuthenticator"/>
+    {% endif %}
     <!-- CROWD:END -->
 
     <!-- CROWD:START - The authenticator below here will need to be commented out for Crowd SSO integration -->
-    <!--<authenticator class="com.atlassian.jira.security.login.JiraSeraphAuthenticator"/>-->
+    {% if CROWD_SSO_ENABLED is not defined or CROWD_SSO_ENABLED == 'false' %}
+    <authenticator class="com.atlassian.jira.security.login.JiraSeraphAuthenticator"/>
+    {% endif %}
     <!-- CROWD:END -->
 
     <!-- NB: the URL to redirect to is now specified by login.url above -->
