@@ -36,6 +36,9 @@ RUN mkdir -p ${JIRA_HOME}/shared && \
     groupadd -r -g ${JIRA_GID} ${JIRA_GROUP} && \
     useradd -r -u ${JIRA_UID} -g ${JIRA_GROUP} -M -d ${JIRA_HOME} ${JIRA_USER} && \
     curl --silent -L ${DOWNLOAD_URL} | tar -xz --strip-components=1 -C "$JIRA_INSTALL_DIR" && \
+    sed -i -e 's/^JVM_SUPPORT_RECOMMENDED_ARGS=""$/: \${JVM_SUPPORT_RECOMMENDED_ARGS:=""}/g' ${JIRA_INSTALL_DIR}/bin/setenv.sh && \
+    sed -i -e 's/^JVM_\(.*\)_MEMORY="\(.*\)"$/: \${JVM_\1_MEMORY:=\2}/g' ${JIRA_INSTALL_DIR}/bin/setenv.sh && \
+    sed -i -e 's/-XX:ReservedCodeCacheSize=\([0-9]\+[kmg]\)/-XX:ReservedCodeCacheSize=${JVM_RESERVED_CODE_CACHE_SIZE:=\1}/g' ${JIRA_INSTALL_DIR}/bin/setenv.sh && \
     chown -R "${JIRA_USER}:${JIRA_GROUP}" "${JIRA_INSTALL_DIR}" && \
     cp /tmp/scripts/* ${JIRA_INSTALL_DIR}/bin && \
     chown -R "${JIRA_USER}:${JIRA_GROUP}" "${JIRA_HOME}" && \

@@ -55,7 +55,7 @@ docker run --init -it --rm \
 ### Environment Variables
 | Variable Name | Description | Default Value |
 | --- | --- | --- |
-| ATL_TOMCAT_PORT | The port jira listens on, this may need to be changed depending on your environment. | 8085 |
+| ATL_TOMCAT_PORT | The port jira listens on, this may need to be changed depending on your environment. | 8080 |
 | ATL_TOMCAT_SCHEME | The protocol via which jira is accessed | http |
 | ATL_TOMCAT_SECURE | Set to true if `ATL_TOMCAT_SCHEME` is 'https' | false |
 | ATL_TOMCAT_CONTEXTPATH | The context path the application is served over | None |
