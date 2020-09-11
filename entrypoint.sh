@@ -12,8 +12,7 @@ export CATALINA_OPTS="${CATALINA_OPTS}"
 startup() {
     echo Starting Jira Server
     ${JIRA_INSTALL_DIR}/bin/start-jira.sh
-    sleep 15
-    tail -n +1 --retry -F ${JIRA_HOME}/log/*.log
+    tail -F ${JIRA_HOME}/log/atlassian-jira.log
 }
 
 shutdown() {

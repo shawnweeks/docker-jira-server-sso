@@ -7,12 +7,10 @@ import re
 env = {k: v
     for k, v in os.environ.items()}
 
-jenv = j2.Environment(
-    loader=j2.FileSystemLoader('/opt/jinja-templates/'),
-    autoescape=j2.select_autoescape(['xml']))
+jenv = j2.Environment(loader=j2.FileSystemLoader('/opt/jinja-templates/'))
 
 def gen_cfg(tmpl, target):
-    print(f"Generating {target} from template {tmpl}")
+    print "Generating {} from template {}".format(target, tmpl)
     cfg = jenv.get_template(tmpl).render(env)
     with open(target, 'w') as fd:
         fd.write(cfg)
@@ -23,7 +21,7 @@ def set_props(props, target):
     tmpInput = input.splitlines()
     output = []
     for k, v in props.items():
-        print(f"Setting {k}={v} in {target}")
+        print "Setting {}={} in {}".format(k, v, target)
         key_found = False
         if output:
             tmpInput = output
@@ -35,10 +33,10 @@ def set_props(props, target):
                 if m.group(2) == v:
                     output.append(line)
                 else:
-                    output.append(f'{k}={v}')
+                    output.append("{}={}".format(k,v))
             else:
                 output.append(line)
         if not key_found:
-            output.append(f'{k}={v}')
+            output.append("{}={}".format(k,v))
     with open(target,'w') as f:
         f.write('\n'.join(output))
