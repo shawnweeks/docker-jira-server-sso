@@ -9,7 +9,7 @@ docker build \
 
 ### Push to Registry
 ```shell
-docker push registry.cloudbrocktec.com/atlassian-suite/jira-server-sso
+docker push $REGISTRY/atlassian-suite/jira-server-sso
 ```
 
 ### Simple Run Command
