@@ -1,9 +1,14 @@
+### Download Software
+```shell
+wget https://product-downloads.atlassian.com/software/jira/downloads/atlassian-jira-software-8.12.3.tar.gz
+```
+
 ### Build Command
 ```shell
 docker build \
-    -t $REGISTRY/atlassian-suite/jira-server-sso:8.12.1.$(date +"%Y%m%d%H%M%S") \
+    -t $REGISTRY/atlassian-suite/jira-server-sso:8.12.3 \
     --build-arg BASE_REGISTRY=$REGISTRY \
-    --build-arg JIRA_VERSION=8.12.1 \
+    --build-arg JIRA_VERSION=8.12.3 \
     .
 ```
 
