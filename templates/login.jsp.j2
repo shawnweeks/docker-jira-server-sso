@@ -13,23 +13,55 @@
 		
 	  var url = new URL(window.location.href);
 	  var osDestination = url.searchParams.get("os_destination");
+	  var autoLogin = url.searchParams.get("auto_login");
+	  if (autoLogin === null || autoLogin === undefined) {
+	    autoLogin = "true";
+	  }
 		
 	  osDestination = osDestination ? osDestination : "";
-	  window.location.replace(ssoUrl + '?redirectTo=' + encodeURIComponent('https://' + window.location.host + contextPath + osDestination));
+	  
+	  function login() {
+	    window.location.replace(ssoUrl + '?redirectTo=' + encodeURIComponent('https://' + window.location.host + contextPath + osDestination));
+	  }
+
+	  var loginLoopCheck = getCookie("loginLoopCheck");
+	  
+	  if (!loginLoopCheck) {
+	    setCookie("loginLoopCheck", "true", contextPath, 1 * 60 * 1000);
+	  } else {
+	    autoLogin = false;
+	  }
+	  
+	  if (autoLogin && autoLogin.toLowerCase() === "true") {
+		login();
+	  }
+
+	  function setCookie(name, value, path, lifeLength) {
+	    var expires = "";
+	    var date = new Date();
+	    date.setTime(date.getTime() + lifeLength);
+	    expires = "; expires=" + date.toUTCString();
+	    document.cookie = name + "=" + (value || "") + expires + "; path=" + path;
+	  }
+	  
+	  function getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == ' ') {
+		    c = c.substring(1, c.length);
+		  }
+          if (c.indexOf(nameEQ) == 0) {
+		    return c.substring(nameEQ.length, c.length);
+		  }
+        }
+        return null;
+      }
+	  
 	</script>{% raw %}
 </head>
 <body>
-    <page:capHide value="IFRAME">
-        <ui:soy moduleKey="'jira.webresources:soy-templates'" template="'JIRA.Templates.Headers.pageHeader'">
-            <ui:param name="'mainContent'">
-                <% if (JiraMobileUtils.isMobileAppRequest(request)) { %>
-                    <img class="jira-mobile-logo" src="<%= request.getContextPath() %>/images/jira-mobile-logo.svg">
-                <% } else { %>
-                    <h1><ww:text name="'login.welcome.to'"/> <%= TextUtils.htmlEncode(ComponentAccessor.getComponent(ApplicationProperties.class).getDefaultBackedString(APKeys.JIRA_TITLE))%></h1>
-                <% } %>
-            </ui:param>
-        </ui:soy>
-    </page:capHide>
-    <%@ include file="/includes/loginform.jsp" %>
+<a href="#" onclick="login()">Click Here to Login</a>
 </body>
 </html>{% endraw %}
