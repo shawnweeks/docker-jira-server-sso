@@ -10,10 +10,10 @@ export JAVA_OPTS="${JAVA_OPTS}"
 export CATALINA_OPTS="${CATALINA_OPTS}"
 
 shutdownCleanup() {
-    if [[ -f ${JIRA_HOME}/.jira-home.lock ]]
+    if [[ -f ${HOME}/shared/.lock ]]
     then
-        echo "Cleaning Up Jira Locks"
-        rm ${JIRA_HOME}/.jira-home.lock
+        echo "Cleaning Up Bitbucket Locks"
+        rm ${HOME}/shared/.lock
     fi
 }
 

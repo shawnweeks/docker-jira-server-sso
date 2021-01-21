@@ -16,8 +16,11 @@ def gen_cfg(tmpl, target):
         fd.write(cfg)
 
 def set_props(props, target):
-    with open(target, 'r') as f:
-        input = f.read()
+    try:
+        with open(target, 'r') as f:
+            input = f.read()
+    except IOError:
+       input = ''
     tmpInput = input.splitlines()
     output = []
     for k, v in props.items():
@@ -37,6 +40,6 @@ def set_props(props, target):
             else:
                 output.append(line)
         if not key_found:
-            output.append("{}={}".format(k,v))
+            output.append("{}={}".format(k,v))    
     with open(target,'w') as f:
         f.write('\n'.join(output))
