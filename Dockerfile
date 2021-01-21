@@ -7,8 +7,8 @@
 # JIRA         2004
 # Bamboo        2005
 ARG BASE_REGISTRY
-ARG BASE_IMAGE=redhat/ubi/ubi7
-ARG BASE_TAG=7.9
+ARG BASE_IMAGE=redhat/ubi/ubi8
+ARG BASE_TAG=8.3
 
 FROM ${BASE_REGISTRY}/${BASE_IMAGE}:${BASE_TAG} as build
 
@@ -22,10 +22,6 @@ RUN mkdir -p /tmp/jira_package && \
 
 
 ###############################################################################
-ARG BASE_REGISTRY
-ARG BASE_IMAGE=redhat/ubi/ubi7
-ARG BASE_TAG=7.9
-
 FROM ${BASE_REGISTRY}/${BASE_IMAGE}:${BASE_TAG}
 
 ENV JIRA_USER jira
@@ -41,7 +37,8 @@ RUN yum install -y java-11-openjdk-devel procps git python2 python2-jinja2 && \
     mkdir -p ${JIRA_HOME}/shared && \
     mkdir -p ${JIRA_INSTALL_DIR} && \
     groupadd -r -g ${JIRA_GID} ${JIRA_GROUP} && \
-    useradd -r -u ${JIRA_UID} -g ${JIRA_GROUP} -M -d ${JIRA_HOME} ${JIRA_USER}
+    useradd -r -u ${JIRA_UID} -g ${JIRA_GROUP} -M -d ${JIRA_HOME} ${JIRA_USER} && \
+    chown ${JIRA_USER}:${JIRA_GROUP} ${JIRA_HOME} -R
 
 COPY [ "templates/*.j2", "/opt/jinja-templates/" ]
 COPY --from=build --chown=${JIRA_USER}:${JIRA_GROUP} [ "/tmp/jira_package", "${JIRA_INSTALL_DIR}/" ]

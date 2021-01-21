@@ -1,14 +1,16 @@
 ### Download Software
 ```shell
-wget https://product-downloads.atlassian.com/software/jira/downloads/atlassian-jira-software-8.12.3.tar.gz
+export JIRA_VERSION=8.12.3
+wget https://product-downloads.atlassian.com/software/jira/downloads/atlassian-jira-software-${JIRA_VERSION}.tar.gz
 ```
 
 ### Build Command
 ```shell
+export JIRA_VERSION=8.12.3
 docker build \
-    -t $REGISTRY/atlassian-suite/jira-server-sso:8.12.3 \
+    -t $REGISTRY/atlassian-suite/jira-server-sso:${JIRA_VERSION} \
     --build-arg BASE_REGISTRY=$REGISTRY \
-    --build-arg JIRA_VERSION=8.12.3 \
+    --build-arg JIRA_VERSION=${JIRA_VERSION} \
     .
 ```
 
@@ -19,15 +21,17 @@ docker push $REGISTRY/atlassian-suite/jira-server-sso
 
 ### Simple Run Command
 ```shell
+export JIRA_VERSION=8.12.3
 docker run --init -it --rm \
     --name jira  \
     -v jira-data:/var/atlassian/application-data/jira \
     -p 8080:8080 \
-    registry.cloudbrocktec.com/atlassian-suite/jira-server-sso:8.12.1
+    registry.cloudbrocktec.com/atlassian-suite/jira-server-sso:${JIRA_VERSION}
 ```
 
 ### SSO Run Command
 ```shell
+export JIRA_VERSION=8.12.3
 # Run first and setup Crowd Directory
 docker run --init -it --rm \
     --name jira  \
@@ -38,7 +42,7 @@ docker run --init -it --rm \
     -e ATL_TOMCAT_SECURE='true' \
     -e ATL_PROXY_NAME='cloudbrocktec.com' \
     -e ATL_PROXY_PORT='443' \
-    registry.cloudbrocktec.com/atlassian-suite/jira-server-sso:8.12.1
+    registry.cloudbrocktec.com/atlassian-suite/jira-server-sso:${JIRA_VERSION}
 
 # Run second after you've setup the crowd connection
 docker run --init -it --rm \
@@ -55,7 +59,7 @@ docker run --init -it --rm \
     -e CROWD_APP_NAME='jira' \
     -e CROWD_APP_PASS='jira' \
     -e CROWD_BASE_URL='https://cloudbrocktec.com/crowd' \
-    registry.cloudbrocktec.com/atlassian-suite/jira-server-sso:8.12.1
+    registry.cloudbrocktec.com/atlassian-suite/jira-server-sso:${JIRA_VERSION}
 ```
 
 ### Environment Variables

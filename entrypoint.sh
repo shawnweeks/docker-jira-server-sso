@@ -9,17 +9,14 @@ umask 0027
 export JAVA_OPTS="${JAVA_OPTS}"
 export CATALINA_OPTS="${CATALINA_OPTS}"
 
-startup() {
-    echo Starting Jira Server
-    ${JIRA_INSTALL_DIR}/bin/start-jira.sh
-    tail -F ${JIRA_HOME}/log/atlassian-jira.log
+shutdownCleanup() {
+    if [[ -f ${JIRA_HOME}/.jira-home.lock ]]
+    then
+        echo "Cleaning Up Jira Locks"
+        rm ${JIRA_HOME}/.jira-home.lock
+    fi
 }
 
-shutdown() {
-    echo Stopping Jira Server
-    ${JIRA_INSTALL_DIR}/bin/stop-jira.sh
-}
-
-trap "shutdown" INT
 entrypoint.py
-startup
+trap "shutdownCleanup" INT
+${JIRA_INSTALL_DIR}/bin/start-jira.sh -fg
