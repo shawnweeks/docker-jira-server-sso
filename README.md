@@ -74,3 +74,9 @@ docker run --init -it --rm \
 | CROWD_BASE_URL | Crowd's Base URL | None |
 | JVM_MINIMUM_MEMORY | Set's Java XMS | None |
 | JVM_MAXIMUM_MEMORY | Set's Java XMX | None |
+
+### Additional
+#### Auto-login
+By default when SSO is enabled, the app will automatically redirect to the SSO login app when the user hits the login page. This can be disabled by passing a query paramter in the login page URL. `auto_login=false`
+
+Too prevent login redirect loops, a cookie is created when the user first hits the login page. Any hits on the login page within one minute afterwards will require the user to click a link to initiate a login.
