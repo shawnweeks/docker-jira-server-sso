@@ -7,7 +7,7 @@ JIRA_INSTALL_DIR = env["JIRA_INSTALL_DIR"]
 
 gen_cfg("server.xml.j2", "{}/conf/server.xml".format(JIRA_INSTALL_DIR))
 
-if "CROWD_SSO_ENABLED" in env and env["CROWD_SSO_ENABLED"] == "true":
+if "ATL_CROWD_SSO_ENABLED" in env and env["ATL_CROWD_SSO_ENABLED"] == "true":
     gen_cfg("seraph-config.xml.j2", "{}/atlassian-jira/WEB-INF/classes/seraph-config.xml".format(JIRA_INSTALL_DIR))
     gen_cfg("web.xml.j2", "{}/atlassian-jira/WEB-INF/web.xml".format(JIRA_INSTALL_DIR))
     gen_cfg("login.jsp.j2", "{}/atlassian-jira/login.jsp".format(JIRA_INSTALL_DIR))

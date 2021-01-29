@@ -1260,7 +1260,7 @@ description, distributable, and context-param elements.
         <servlet-class>jsp.issue_002dpermission_002derror_jsp</servlet-class>
     </servlet>
 
-    {% if CROWD_SSO_ENABLED is not defined or CROWD_SSO_ENABLED == 'false' %}
+    {% if ATL_CROWD_SSO_ENABLED is not defined or ATL_CROWD_SSO_ENABLED == 'false' %}
     <servlet>
         <servlet-name>jsp.login_jsp</servlet-name>
         <servlet-class>jsp.login_jsp</servlet-class>
@@ -4747,7 +4747,7 @@ description, distributable, and context-param elements.
         <url-pattern>/issue-permission-error.jsp</url-pattern>
     </servlet-mapping>
     
-    {% if CROWD_SSO_ENABLED is not defined or CROWD_SSO_ENABLED == 'false' %}
+    {% if ATL_CROWD_SSO_ENABLED is not defined or ATL_CROWD_SSO_ENABLED == 'false' %}
     <servlet-mapping>
         <servlet-name>jsp.login_jsp</servlet-name>
         <url-pattern>/login.jsp</url-pattern>

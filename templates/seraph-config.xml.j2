@@ -92,13 +92,13 @@
     </parameters>
 
     <!-- CROWD:START - If enabling Crowd SSO integration uncomment the following SSOSeraphAuthenticator and comment out the JiraSeraphAuthenticator below -->
-    {% if CROWD_SSO_ENABLED is defined and CROWD_SSO_ENABLED == 'true' %}
+    {% if ATL_CROWD_SSO_ENABLED is defined and ATL_CROWD_SSO_ENABLED == 'true' %}
     <authenticator class="com.atlassian.jira.security.login.SSOSeraphAuthenticator"/>
     {% endif %}
     <!-- CROWD:END -->
 
     <!-- CROWD:START - The authenticator below here will need to be commented out for Crowd SSO integration -->
-    {% if CROWD_SSO_ENABLED is not defined or CROWD_SSO_ENABLED == 'false' %}
+    {% if ATL_CROWD_SSO_ENABLED is not defined or ATL_CROWD_SSO_ENABLED == 'false' %}
     <authenticator class="com.atlassian.jira.security.login.JiraSeraphAuthenticator"/>
     {% endif %}
     <!-- CROWD:END -->

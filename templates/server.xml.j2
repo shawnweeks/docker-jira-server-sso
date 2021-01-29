@@ -34,8 +34,8 @@
         <!-- Relaxing chars because of JRASERVER-67974 -->
         <Connector port="{{ ATL_TOMCAT_PORT | default('8080') }}"
                    
-                   proxyName="{{ ATL_PROXY_NAME | default('') }}"
-                   proxyPort="{{ ATL_PROXY_PORT | default('') }}"
+                   proxyName="{{ ATL_TOMCAT_PROXY_NAME | default('') }}"
+                   proxyPort="{{ ATL_TOMCAT_PROXY_PORT | default('') }}"
                    scheme="{{ ATL_TOMCAT_SCHEME | default('http') }}"
                    secure="{{ ATL_TOMCAT_SECURE | default('false') }}"
                    
