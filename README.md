@@ -40,8 +40,8 @@ docker run --init -it --rm \
     -e ATL_TOMCAT_CONTEXTPATH='/jira' \
     -e ATL_TOMCAT_SCHEME='https' \
     -e ATL_TOMCAT_SECURE='true' \
-    -e ATL_PROXY_NAME='cloudbrocktec.com' \
-    -e ATL_PROXY_PORT='443' \
+    -e ATL_TOMCAT_PROXY_NAME='cloudbrocktec.com' \
+    -e ATL_TOMCAT_PROXY_PORT='443' \
     ${REGISTRY}/atlassian-suite/jira-server-sso:${JIRA_VERSION}
 
 # Run second after you've setup the crowd connection
@@ -52,14 +52,14 @@ docker run --init -it --rm \
     -e ATL_TOMCAT_CONTEXTPATH='/jira' \
     -e ATL_TOMCAT_SCHEME='https' \
     -e ATL_TOMCAT_SECURE='true' \
-    -e ATL_PROXY_NAME='cloudbrocktec.com' \
-    -e ATL_PROXY_PORT='443' \
-    -e CROWD_SSO_ENABLED='true' \
-    -e CUSTOM_SSO_LOGIN_URL='https://cloudbrocktec.com/spring-crowd-sso/saml/login' \
-    -e CROWD_APP_NAME='jira' \
-    -e CROWD_APP_PASS='jira' \
-    -e CROWD_BASE_URL='https://cloudbrocktec.com/crowd' \
-    registry.cloudbrocktec.com/atlassian-suite/jira-server-sso:${JIRA_VERSION}
+    -e ATL_TOMCAT_PROXY_NAME='cloudbrocktec.com' \
+    -e ATL_TOMCAT_PROXY_PORT='443' \
+    -e ATL_CROWD_SSO_ENABLED='true' \
+    -e ATL_SSO_LOGIN_URL='https://cloudbrocktec.com/spring-crowd-sso/saml/login' \
+    -e ATL_CROWD_APP_NAME='jira' \
+    -e ATL_CROWD_APP_PASS='jira' \
+    -e ATL_CROWD_BASE_URL='https://cloudbrocktec.com/crowd' \
+    ${REGISTRY}/atlassian-suite/jira-server-sso:${JIRA_VERSION}
 ```
 
 ### Environment Variables
