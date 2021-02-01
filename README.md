@@ -71,6 +71,13 @@ docker run --init -it --rm \
 | ATL_TOMCAT_CONTEXTPATH | The context path the application is served over | None |
 | ATL_TOMCAT_PROXY_NAME | The reverse proxys full URL for jira | None |
 | ATL_TOMCAT_PROXY_PORT | The reverse proxy's port number | None |
+| ATL_TOMCAT_SSL_ENABLED | Enable Tomcat SSL Support | None |
+| ATL_TOMCAT_PROTOCOL | Tomcat Connector Protocol Class(Only set if SSL is enabled) | org.apache.coyote.http11.Http11NioProtocol |
+| ATL_TOMCAT_SSL_ENABLED_PROTOCOLS | Allowed SSL Protocols | TLSv1.2,TLSv1.3 |
+| ATL_TOMCAT_KEY_ALIAS | Tomcat SSL Key Alias | None |
+| ATL_TOMCAT_KEYSTORE_FILE | Tomcat SSL Keystore File | None |
+| ATL_TOMCAT_KEYSTORE_PASS | Tomcat SSL Keystore Password | None |
+| ATL_TOMCAT_KEYSTORE_TYPE | Tomcat SSL Keystore Type | JKS |
 | ATL_SSO_LOGIN_URL | Login URL for Custom SSO Support | None |
 | ATL_CROWD_SSO_ENABLED | Enable Crowd SSO Support | false |
 | ATL_CROWD_APP_NAME | Crowd Application Name, Required if for Crowd SSO. | None |
