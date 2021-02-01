@@ -33,14 +33,14 @@
 
         <!-- Relaxing chars because of JRASERVER-67974 -->
         <Connector port="{{ ATL_TOMCAT_PORT | default('8080') }}"
-                   {% if ATL_TOMCAT_SSL_ENABLED is defined and ATL_TOMCAT_SSL_ENABLED == 'true' %}
-                   protocol="{{ ATL_TOMCAT_PROTOCOL | default('org.apache.coyote.http11.Http11NioProtocol') }}"
+                   
+                   SSLEnabled="{{ ATL_TOMCAT_SSL_ENABLED | default('false') }}"
                    sslEnabledProtocols="{{ ATL_TOMCAT_SSL_ENABLED_PROTOCOLS | default ('TLSv1.2,TLSv1.3') }}"
-                   keyAlias="{{ ATL_TOMCAT_KEY_ALIAS | default('' }}"
+                   keyAlias="{{ ATL_TOMCAT_KEY_ALIAS | default('') }}"
                    keystoreFile="{{ ATL_TOMCAT_KEYSTORE_FILE | default('') }}"
-                   keystorePass="{{ ATL_TOMCAT_KEYSTORE_PASS | default('') }}"
-                   keystoreType="{{ ATL_TOMCAT_KEYSTORE_TYPE| default('JKS') }}"
-                   {% endif %}
+                   keystorePass="{{ ATL_TOMCAT_KEYSTORE_PASSWORD | default('') }}"
+                   keystoreType="{{ ATL_TOMCAT_KEYSTORE_TYPE| default('JKS') }}"         
+
                    proxyName="{{ ATL_TOMCAT_PROXY_NAME | default('') }}"
                    proxyPort="{{ ATL_TOMCAT_PROXY_PORT | default('') }}"
                    scheme="{{ ATL_TOMCAT_SCHEME | default('http') }}"
@@ -58,7 +58,8 @@
                    redirectPort="8443"
                    acceptCount="100" 
                    disableUploadTimeout="true" 
-                   bindOnInit="false"/>
+                   bindOnInit="false"
+                   protocol="org.apache.coyote.http11.Http11NioProtocol"/>
 
         <!--
          ==============================================================================================================
