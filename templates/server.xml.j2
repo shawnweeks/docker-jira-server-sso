@@ -15,7 +15,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<Server port="8005" shutdown="SHUTDOWN">
+<Server port="-1" shutdown="SHUTDOWN">
     <Listener className="org.apache.catalina.startup.VersionLoggerListener"/>
     <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on"/>
     <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener"/>
@@ -35,7 +35,7 @@
         <Connector port="{{ ATL_TOMCAT_PORT | default('8080') }}"
                    
                    SSLEnabled="{{ ATL_TOMCAT_SSL_ENABLED | default('false') }}"
-                   sslEnabledProtocols="{{ ATL_TOMCAT_SSL_ENABLED_PROTOCOLS | default ('TLSv1.2,TLSv1.3') }}"
+                   sslEnabledProtocols="{{ ATL_TOMCAT_SSL_ENABLED_PROTOCOLS | default ('TLSv1.2') }}"
                    keyAlias="{{ ATL_TOMCAT_KEY_ALIAS | default('') }}"
                    keystoreFile="{{ ATL_TOMCAT_KEYSTORE_FILE | default('') }}"
                    keystorePass="{{ ATL_TOMCAT_KEYSTORE_PASSWORD | default('') }}"
@@ -49,7 +49,8 @@
                    relaxedPathChars="[]|" 
                    relaxedQueryChars="[]|{}^&#x5c;&#x60;&quot;&lt;&gt;"
                    maxThreads="150" 
-                   minSpareThreads="25" 
+                   minSpareThreads="25"
+                   maxConnections="{{ ATL_TOMCAT_MAX_CONNECTIONS | default('8192') }}"
                    connectionTimeout="20000" 
                    enableLookups="false"
                    maxHttpHeaderSize="8192" 
@@ -131,8 +132,13 @@
                 </Context>
 
             </Host>
+            <Valve className="org.apache.catalina.valves.ErrorReportValve" showReport="false" showServerInfo="false" />
+            <Valve className="org.apache.catalina.valves.RemoteIpValve" />
             <Valve className="org.apache.catalina.valves.AccessLogValve"
-                   pattern="%a %{jira.request.id}r %{jira.request.username}r %t &quot;%m %U%q %H&quot; %s %b %D &quot;%{Referer}i&quot; &quot;%{User-Agent}i&quot; &quot;%{jira.request.assession.id}r&quot;"/>
+                   directory="logs"
+                   prefix="access_log" suffix=".log"
+                   pattern="%a %{jira.request.id}r %{jira.request.username}r %t &quot;%m %U%q %H&quot; %s %b %D &quot;%{Referer}i&quot; &quot;%{User-Agent}i&quot; &quot;%{jira.request.assession.id}r&quot;"
+                   requestAttributesEnabled="true" />
         </Engine>
     </Service>
 </Server>

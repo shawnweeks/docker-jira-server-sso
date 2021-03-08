@@ -32,26 +32,23 @@ ENV JIRA_GID 2001
 ENV JIRA_HOME /var/atlassian/application-data/jira
 ENV JIRA_INSTALL_DIR /opt/atlassian/jira
 
-RUN yum install -y java-11-openjdk-devel procps git python2 python2-jinja2 && \
+RUN yum install -y java-11-openjdk-devel && \
     yum clean all && \    
-    mkdir -p ${JIRA_HOME}/shared && \
+    mkdir -p ${JIRA_HOME}/{log,shared} && \
     mkdir -p ${JIRA_INSTALL_DIR} && \
     groupadd -r -g ${JIRA_GID} ${JIRA_GROUP} && \
     useradd -r -u ${JIRA_UID} -g ${JIRA_GROUP} -M -d ${JIRA_HOME} ${JIRA_USER} && \
-    chown ${JIRA_USER}:${JIRA_GROUP} ${JIRA_HOME} -R
+    touch ${JIRA_HOME}/jira-config.properties && \
+    chown ${JIRA_USER}:${JIRA_GROUP} ${JIRA_HOME} -R && \
+    chown ${JIRA_USER}:${JIRA_GROUP} ${JIRA_INSTALL_DIR} -R
 
 COPY [ "templates/*.j2", "/opt/jinja-templates/" ]
 COPY --from=build --chown=${JIRA_USER}:${JIRA_GROUP} [ "/tmp/jira_package", "${JIRA_INSTALL_DIR}/" ]
 COPY --chown=${JIRA_USER}:${JIRA_GROUP} [ "entrypoint.sh", "entrypoint.py", "entrypoint_helpers.py", "${JIRA_INSTALL_DIR}/" ]
 
-COPY [ "entrypoint.sh", "entrypoint.py", "entrypoint_helpers.py", "/tmp/scripts/" ]
-
-COPY [ "templates/*.j2", "/opt/jinja-templates/" ]
-
 RUN sed -i -e 's/^JVM_SUPPORT_RECOMMENDED_ARGS=""$/: \${JVM_SUPPORT_RECOMMENDED_ARGS:=""}/g' ${JIRA_INSTALL_DIR}/bin/setenv.sh && \
     sed -i -e 's/^JVM_\(.*\)_MEMORY="\(.*\)"$/: \${JVM_\1_MEMORY:=\2}/g' ${JIRA_INSTALL_DIR}/bin/setenv.sh && \
-    sed -i -e 's/-XX:ReservedCodeCacheSize=\([0-9]\+[kmg]\)/-XX:ReservedCodeCacheSize=${JVM_RESERVED_CODE_CACHE_SIZE:=\1}/g' ${JIRA_INSTALL_DIR}/bin/setenv.sh && \
-    touch ${JIRA_HOME}/jira-config.properties && \
+    sed -i -e 's/-XX:ReservedCodeCacheSize=\([0-9]\+[kmg]\)/-XX:ReservedCodeCacheSize=${JVM_RESERVED_CODE_CACHE_SIZE:=\1}/g' ${JIRA_INSTALL_DIR}/bin/setenv.sh && \    
     chmod 755 ${JIRA_INSTALL_DIR}/entrypoint.*
 
 EXPOSE 8080
