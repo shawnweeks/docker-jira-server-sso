@@ -1,12 +1,11 @@
 ### Download Software
 ```shell
-export JIRA_VERSION=8.12.3
+export JIRA_VERSION=8.13.4
 wget https://product-downloads.atlassian.com/software/jira/downloads/atlassian-jira-software-${JIRA_VERSION}.tar.gz
 ```
 
 ### Build Command
 ```shell
-export JIRA_VERSION=8.12.3
 docker build \
     -t ${REGISTRY}/atlassian-suite/jira-server-sso:${JIRA_VERSION} \
     --build-arg BASE_REGISTRY=${REGISTRY} \
@@ -21,7 +20,6 @@ docker push ${REGISTRY}/atlassian-suite/jira-server-sso
 
 ### Simple Run Command
 ```shell
-export JIRA_VERSION=8.12.3
 docker run --init -it --rm \
     --name jira  \
     -v jira-data:/var/atlassian/application-data/jira \
@@ -31,7 +29,6 @@ docker run --init -it --rm \
 
 ### SSO Run Command
 ```shell
-export JIRA_VERSION=8.12.3
 # Run first and setup Crowd Directory
 docker run --init -it --rm \
     --name jira  \
